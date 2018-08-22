@@ -11,8 +11,8 @@ var paths = {
   tsPath: 'src/**/*.ts',
   jsPath: 'bin',
   tsDefPath: 'src/protos/**/*.d.ts',
-  protoSrc: 'src/protos/*.js',
-  protoDst: 'bin/protos'
+  protoSrc: 'src/protos/**/*.js',
+  protoDst: 'bin'
 };
 
 var node;
@@ -24,6 +24,12 @@ gulp.task('server', function() {
       gulp.log('Error detected, waiting for changes...');
     }
   });
+});
+
+gulp.task('build-proto', function() {
+  return 
+    gulp.src(paths.protoSrc)
+    .pipe(gulp.dest(paths.protoDst));
 });
 
 gulp.task('build-typescript', function(cb) {
@@ -38,9 +44,9 @@ gulp.task('build-typescript', function(cb) {
 });
 
 gulp.task('default', function () {
-  runseq('build-typescript', 'server');
+  runseq('build-typescript', 'build-proto', 'server');
   gulp.watch('src/**/*.ts', function() {
-    runseq('build-typescript', 'server');
+    runseq('build-typescript', 'build-proto', 'server');
   });
 });
  
