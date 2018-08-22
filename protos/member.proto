@@ -1,0 +1,29 @@
+
+syntax = "proto3";
+
+package handstudio.member;
+
+message Member {
+  string token = 1;
+  string name = 2;
+  string email = 3;
+  repeated Role roles = 4;
+}
+message Role {
+  string name = 1;
+}
+
+
+message ReqMemberCreate {
+  string name = 1;
+  string email = 2;
+  string password = 3;
+}
+message ReqMemberGet {
+  string token = 1;
+}
+
+service MemberService {
+  rpc CreateMember(ReqMemberCreate) returns (Member) {}
+  rpc GetMember(ReqMemberGet) returns (Member) {}
+}
