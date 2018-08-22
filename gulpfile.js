@@ -1,17 +1,14 @@
 
 var gulp = require('gulp');
 var typescript = require('gulp-tsc');
-var ts = require('gulp-typescript');
 var runseq = require('run-sequence');
 var spawn = require('child_process').spawn;
-
-//var tsProject = ts.createProject('tsconfig.json');
 
 var paths = {
   tsPath: 'src/**/*.ts',
   jsPath: 'bin',
   tsDefPath: 'src/protos/**/*.d.ts',
-  protoSrc: 'src/protos/**/*.js',
+  protoSrc: 'src/**/*.js',
   protoDst: 'bin'
 };
 
@@ -26,13 +23,12 @@ gulp.task('server', function() {
   });
 });
 
-gulp.task('build-proto', function() {
-  return 
-    gulp.src(paths.protoSrc)
+gulp.task('copy-proto', function() {
+  return gulp.src(paths.protoSrc)
     .pipe(gulp.dest(paths.protoDst));
 });
 
-gulp.task('build-typescript', function(cb) {
+gulp.task('build-typescript', function() {
   return gulp.src(paths.tsPath)
     .pipe(typescript({
       emitError: false,
@@ -44,9 +40,9 @@ gulp.task('build-typescript', function(cb) {
 });
 
 gulp.task('default', function () {
-  runseq('build-typescript', 'build-proto', 'server');
+  runseq('build-typescript', 'copy-proto', 'server');
   gulp.watch('src/**/*.ts', function() {
-    runseq('build-typescript', 'build-proto', 'server');
+    runseq('build-typescript', 'server');
   });
 });
  

@@ -19,7 +19,6 @@
     "gulp": "^3.9.1",
     "gulp-protoc": "^1.0.0",
     "gulp-tsc": "^1.3.2",
-    "gulp-typescript": "^5.0.0-alpha.3",
     "protoc-gen-grpc-ts": "^1.0.1",
     "run-sequence": "^2.2.1",
     "ts-protoc-gen": "^0.7.6",
