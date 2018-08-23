@@ -3,6 +3,7 @@ var gulp = require('gulp');
 var typescript = require('gulp-tsc');
 var runseq = require('run-sequence');
 var spawn = require('child_process').spawn;
+var run = require('gulp-run');
 
 var paths = {
   tsPath: 'src/**/*.ts',
@@ -23,9 +24,8 @@ gulp.task('server', function() {
   });
 });
 
-gulp.task('copy-proto', function() {
-  return gulp.src(paths.protoSrc)
-    .pipe(gulp.dest(paths.protoDst));
+gulp.task('build-proto', function() {
+  return run('./gen-protobufs.sh').exec();
 });
 
 gulp.task('build-typescript', function() {
@@ -40,7 +40,7 @@ gulp.task('build-typescript', function() {
 });
 
 gulp.task('default', function () {
-  runseq('build-typescript', 'copy-proto', 'server');
+  runseq('build-typescript', 'build-proto', 'server');
   gulp.watch('src/**/*.ts', function() {
     runseq('build-typescript', 'server');
   });
